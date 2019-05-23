@@ -30,10 +30,9 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 q = Queue()
-for next_path in player.currentRoom:
-
-while q.size() > 0:
-    q.enqueue()
+print(
+player.currentRoom.getExits()
+)
 
 for move in traversalPath:
     player.travel(move)
