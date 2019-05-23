@@ -28,18 +28,19 @@ traversalPath = []
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
+visited_rooms.add(player.currentRoom)
 q = Queue()
 q.enqueue([player.currentRoom])
 while q.size() > 0:
     path = q.dequeue()
     node = path[-1]
     print(node)
-    visited_rooms.add(node)
     for direction in node.getExits():
         if direction == "n" and node.n_to not in visited_rooms:
             print("north happened")
             new_path = path.copy()
             new_path.append(node.n_to)
+            visited_rooms.add(node.n_to)
             q.enqueue(new_path)
             traversalPath.append('n')
             break
@@ -47,6 +48,7 @@ while q.size() > 0:
             print("east happened")
             new_path = path.copy()
             new_path.append(node.e_to)
+            visited_rooms.add(node.e_to)
             q.enqueue(new_path)
             traversalPath.append('e')
             break
@@ -54,6 +56,7 @@ while q.size() > 0:
             print("south happened")
             new_path = path.copy()
             new_path.append(node.s_to)
+            visited_rooms.add(node.s_to)
             q.enqueue(new_path)
             traversalPath.append('s')
             break
@@ -61,6 +64,7 @@ while q.size() > 0:
             print("west happened")
             new_path = path.copy()
             new_path.append(node.w_to)
+            visited_rooms.add(node.w_to)
             q.enqueue(new_path)
             traversalPath.append('w')
             break
@@ -78,20 +82,33 @@ while q.size() > 0:
                     southindex = path.index(node.s_to)
                     indexlist.append(southindex)
                 else:
-                    eastindex = path.index(node.w_to)
+                    westindex = path.index(node.w_to)
                     indexlist.append(westindex)
-            if min(indexlist) == northindex:
+            if 'n' in node.getExits() and min(indexlist) == northindex:
                 print("revisit north happened")
-
-            elif min(indexlist) == eastindex:
+                new_path = path.copy()
+                new_path.append(node.n_to)
+                q.enqueue(new_path)
+                traversalPath.append('n')
+            elif 'e' in node.getExits() and min(indexlist) == eastindex:
                 print("revisit east happened")
-
-            elif min(indexlist) == southindex:
+                new_path = path.copy()
+                new_path.append(node.e_to)
+                q.enqueue(new_path)
+                traversalPath.append('e')
+            elif 's' in node.getExits() and min(indexlist) == southindex:
                 print("revisit south happened")
-
+                new_path = path.copy()
+                new_path.append(node.s_to)
+                q.enqueue(new_path)
+                traversalPath.append('s')
             else:
+                new_path = path.copy()
+                new_path.append(node.w_to)
+                q.enqueue(new_path)
+                traversalPath.append('w')
                 print("revisit east happened")
-                
+
 
 
 for move in traversalPath:
