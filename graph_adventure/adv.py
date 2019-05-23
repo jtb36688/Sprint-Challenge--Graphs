@@ -67,15 +67,31 @@ while q.size() > 0:
         else:
             # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
             for direction in node.getExits():
+                indexlist = []
                 if direction == "n":
                     northindex = path.index(node.n_to)
+                    indexlist.append(northindex)
                 elif direction == "e":
                     eastindex = path.index(node.e_to)
+                    indexlist.append(eastindex)
                 elif direction == "s":
                     southindex = path.index(node.s_to)
+                    indexlist.append(southindex)
                 else:
                     eastindex = path.index(node.w_to)
+                    indexlist.append(westindex)
+            if min(indexlist) == northindex:
+                print("revisit north happened")
 
+            elif min(indexlist) == eastindex:
+                print("revisit east happened")
+
+            elif min(indexlist) == southindex:
+                print("revisit south happened")
+
+            else:
+                print("revisit east happened")
+                
 
 
 for move in traversalPath:
