@@ -29,7 +29,7 @@ traversalPath = []
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 q = Queue()
-q.enqueue(player.currentRoom)
+q.enqueue([player.currentRoom])
 while q.size() > 0:
     path = q.dequeue()
     node = path[-1]
@@ -37,29 +37,44 @@ while q.size() > 0:
     visited_rooms.add(node)
     for direction in node.getExits():
         if direction == "n" and node.n_to not in visited_rooms:
+            print("north happened")
             new_path = path.copy()
-            new_path.append(roomGraph[node.n_to.id])
+            new_path.append(node.n_to)
             q.enqueue(new_path)
+            traversalPath.append('n')
             break
         elif direction == "e" and node.e_to not in visited_rooms:
+            print("east happened")
             new_path = path.copy()
-            new_path.append(roomGraph[node.e_to.id])
+            new_path.append(node.e_to)
             q.enqueue(new_path)
+            traversalPath.append('e')
             break
         elif direction == "s" and node.s_to not in visited_rooms:
+            print("south happened")
             new_path = path.copy()
-            new_path.append(roomGraph[node.s_to.id])
+            new_path.append(node.s_to)
             q.enqueue(new_path)
+            traversalPath.append('s')
             break
         elif direction == "w" and node.w_to not in visited_rooms:
+            print("west happened")
             new_path = path.copy()
-            new_path.append(roomGraph[node.w_to.id])
+            new_path.append(node.w_to)
             q.enqueue(new_path)
+            traversalPath.append('w')
             break
         else:
-            for room in path:
-                print(room)
-
+            # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
+            for direction in node.getExits():
+                if direction == "n":
+                    northindex = path.index(node.n_to)
+                elif direction == "e":
+                    eastindex = path.index(node.e_to)
+                elif direction == "s":
+                    southindex = path.index(node.s_to)
+                else:
+                    eastindex = path.index(node.w_to)
 
 
 
