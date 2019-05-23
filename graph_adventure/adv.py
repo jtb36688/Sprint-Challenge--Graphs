@@ -28,11 +28,18 @@ traversalPath = []
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
 q = Queue()
-print(
-player.currentRoom.getExits()
-)
+# player.currentRoom.getExits()
+queue.enqueue(roomGraph[player.currentRoom.id])
+while queue.size() > 0:
+    path = queue.dequeue()
+    node = path[-1]
+    visited_rooms.add(node)
+    for new_path in node.getExits():
+        if new_path == "n" and node.n_to not in visited_rooms:
+            queue.enqueue(node.n_to)
+
+
 
 for move in traversalPath:
     player.travel(move)
