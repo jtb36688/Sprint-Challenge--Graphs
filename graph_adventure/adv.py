@@ -74,8 +74,9 @@ while q.size() > 0:
             deadend = True
         # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
     if deadend == True:
+        print("deadend with", node.getExits())
+        indexlist = []
         for direction in node.getExits():
-            indexlist = []
             if direction == "n":
                 northindex = path.index(node.n_to)
                 indexlist.append(northindex)
@@ -91,12 +92,15 @@ while q.size() > 0:
         if 'n' in node.getExits() and min(indexlist) == northindex:
             print("north", northindex)
             print("south", southindex)
+            print(indexlist)
             print("revisit north happened")
             new_path = path.copy()
             new_path.append(node.n_to)
             q.enqueue(new_path)
             traversalPath.append('n')
         elif 's' in node.getExits() and min(indexlist) == southindex:
+            print("south", southindex)
+            print(indexlist)
             print("revisit south happened")
             new_path = path.copy()
             new_path.append(node.s_to)
@@ -114,7 +118,7 @@ while q.size() > 0:
             new_path.append(node.e_to)
             q.enqueue(new_path)
             traversalPath.append('e')
-    if len(visited_rooms) == 5:
+    if len(visited_rooms) == len(roomGraph):
         break
 
 
