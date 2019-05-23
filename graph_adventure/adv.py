@@ -29,29 +29,36 @@ traversalPath = []
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 q = Queue()
-q.enqueue([roomGraph[player.currentRoom.id]])
+q.enqueue(player.currentRoom)
 while q.size() > 0:
     path = q.dequeue()
     node = path[-1]
+    print(node)
     visited_rooms.add(node)
-    for attr, value in roomGraph[node.id][1].items():
-        if attr == "n" and node.n_to not in visited_rooms:
+    for direction in node.getExits():
+        if direction == "n" and node.n_to not in visited_rooms:
             new_path = path.copy()
             new_path.append(roomGraph[node.n_to.id])
             q.enqueue(new_path)
             break
-        elif attr == "e" and node.e_to not in visited_rooms:
+        elif direction == "e" and node.e_to not in visited_rooms:
             new_path = path.copy()
             new_path.append(roomGraph[node.e_to.id])
             q.enqueue(new_path)
-        elif attr == "s" and node.s_to not in visited_rooms:
+            break
+        elif direction == "s" and node.s_to not in visited_rooms:
             new_path = path.copy()
             new_path.append(roomGraph[node.s_to.id])
             q.enqueue(new_path)
-        elif attr == "w" and node.w_to not in visited_rooms:
+            break
+        elif direction == "w" and node.w_to not in visited_rooms:
             new_path = path.copy()
             new_path.append(roomGraph[node.w_to.id])
             q.enqueue(new_path)
+            break
+        else:
+            for room in path:
+                print(room)
 
 
 
