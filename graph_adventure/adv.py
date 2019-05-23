@@ -32,6 +32,8 @@ visited_rooms.add(player.currentRoom)
 q = Queue()
 q.enqueue([player.currentRoom])
 while q.size() > 0:
+    deadend = False
+    print(traversalPath)
     path = q.dequeue()
     node = path[-1]
     print(node)
@@ -68,46 +70,48 @@ while q.size() > 0:
             q.enqueue(new_path)
             traversalPath.append('w')
             break
-        else:
-            # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
-            for direction in node.getExits():
-                indexlist = []
-                if direction == "n":
-                    northindex = path.index(node.n_to)
-                    indexlist.append(northindex)
-                elif direction == "e":
-                    eastindex = path.index(node.e_to)
-                    indexlist.append(eastindex)
-                elif direction == "s":
-                    southindex = path.index(node.s_to)
-                    indexlist.append(southindex)
-                else:
-                    westindex = path.index(node.w_to)
-                    indexlist.append(westindex)
-            if 'n' in node.getExits() and min(indexlist) == northindex:
-                print("revisit north happened")
-                new_path = path.copy()
-                new_path.append(node.n_to)
-                q.enqueue(new_path)
-                traversalPath.append('n')
-            elif 'e' in node.getExits() and min(indexlist) == eastindex:
-                print("revisit east happened")
-                new_path = path.copy()
-                new_path.append(node.e_to)
-                q.enqueue(new_path)
-                traversalPath.append('e')
-            elif 's' in node.getExits() and min(indexlist) == southindex:
-                print("revisit south happened")
-                new_path = path.copy()
-                new_path.append(node.s_to)
-                q.enqueue(new_path)
-                traversalPath.append('s')
+        elif direction == node.getExits()[-1]:
+            deadend = True
+        # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
+    if deadend == True:
+        for direction in node.getExits():
+            indexlist = []
+            if direction == "n":
+                northindex = path.index(node.n_to)
+                indexlist.append(northindex)
+            elif direction == "e":
+                eastindex = path.index(node.e_to)
+                indexlist.append(eastindex)
+            elif direction == "s":
+                southindex = path.index(node.s_to)
+                indexlist.append(southindex)
             else:
-                new_path = path.copy()
-                new_path.append(node.w_to)
-                q.enqueue(new_path)
-                traversalPath.append('w')
-                print("revisit east happened")
+                westindex = path.index(node.w_to)
+                indexlist.append(westindex)
+        if 'n' in node.getExits() and min(indexlist) == northindex:
+            print("revisit north happened")
+            new_path = path.copy()
+            new_path.append(node.n_to)
+            q.enqueue(new_path)
+            traversalPath.append('n')
+        elif 'e' in node.getExits() and min(indexlist) == eastindex:
+            print("revisit east happened")
+            new_path = path.copy()
+            new_path.append(node.e_to)
+            q.enqueue(new_path)
+            traversalPath.append('e')
+        elif 's' in node.getExits() and min(indexlist) == southindex:
+            print("revisit south happened")
+            new_path = path.copy()
+            new_path.append(node.s_to)
+            q.enqueue(new_path)
+            traversalPath.append('s')
+        else:
+            print("revisit east happened")
+            new_path = path.copy()
+            new_path.append(node.w_to)
+            q.enqueue(new_path)
+            traversalPath.append('w')
 
 
 
