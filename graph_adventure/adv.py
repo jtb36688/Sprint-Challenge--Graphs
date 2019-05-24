@@ -31,7 +31,8 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 directions = ['n', 's', 'e', 'w']
 while len(visited_rooms) != len(roomGraph):
-    visited_rooms.add(player.currentRoom)
+    if player.currentRoom not in visited_rooms:
+        visited_rooms.add(player.currentRoom)
     room_found = False
     print("original loop at", player.currentRoom.id)
     print("current path", traversalPath)
@@ -91,13 +92,13 @@ while len(visited_rooms) != len(roomGraph):
             attr = direction + '_to'
             room_in_dir = getattr(current_room, attr)
             if room_in_dir and room_in_dir not in visited_search:
-                print("line 93")
+                # print("line 93")
                 q.enqueue(room_in_dir)
                 if room_in_dir.id not in searchpath:
-                    print("searchpath made with key", room_in_dir.id)
+                    # print("searchpath made with key", room_in_dir.id)
                     searchpath[room_in_dir.id] = []
                 if current_room.id in searchpath:
-                    print("line 97")
+                    # print("line 97")
                     for movement in searchpath[current_room.id]:
                         searchpath[room_in_dir.id].append(movement)
                 searchpath[room_in_dir.id].append(direction)
