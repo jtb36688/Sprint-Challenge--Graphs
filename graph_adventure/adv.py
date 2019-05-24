@@ -86,34 +86,32 @@ while q.size() > 0:
                 print(traversalPath)
                 print("stuck length", len(traversalPath))
                 print("stuck, searching at room", node.id)
+                stuck = True
                 q2 = Queue()
                 visitedsearch = set()
-                current = node
                 currentpaths = node.getExits()
                 for path in currentpaths:
-                    if path = 'n':
-                        q2.enqueue(node, node.n_to)
-                    elif path = 'e':
-                        q2.enqueue(node, node.e_to)
-                    elif path = 's':
-                        q2.enqueue(node, node.s_to)
+                    if path == 'n':
+                        q2.enqueue([node, node.n_to])
+                    elif path == 'e':
+                        q2.enqueue([node, node.e_to])
+                    elif path == 's':
+                        q2.enqueue([node, node.s_to])
                     else:
-                        q2.enqueue(node, node.w_to)
+                        q2.enqueue([node, node.w_to])
                 for k, v in roomGraph.items():
                     while q2.size() > 0:
-                        if not node == player.startingRoom:
-                        current = node
-                        currentpaths = node.getExits()
-                        pathsdict = {}
-                        for path in currentpaths:
-                            if path = 'n':
-                                pathsdict[n] = node.n_to
-                            elif path = 'e':
-                                pathsdict[e] = node.e_to
-                            elif path = 's':
-                                pathsdict[s] = node.s_to
-                            else:
-                                pathsdict[w] = node.w_to
+                        if not current == player.startingRoom:
+                            currentpaths = node.getExits()
+                            for path in currentpaths:
+                                if path == 'n':
+                                    q2.enqueue([node, node.n_to])
+                                elif path == 'e':
+                                    q2.enqueue([node, node.e_to])
+                                elif path == 's':
+                                    q2.enqueue([node, node.s_to])
+                                else:
+                                    q2.enqueue([node, node.w_to])
                         
 
 
