@@ -65,84 +65,54 @@ while len(visited_rooms) != len(roomGraph):
             for direction in directions:
                 attr = direction + '_to'
                 room_in_dir = getattr(current_room, attr)
+                if room_in_dir in visited_rooms:
+                    room_in_dir == False
                 traversalPath.append(searchpath)
                 traversalPath.append(direction)
                 player.currentRoom = room_in_dir
-
-
-            
-        
-        # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
-    # if deadend == True:
-    #     indexlist = []
-    #     for direction in node.getExits():
-    #         if direction == "n":
-    #             northindex = path.index(node.n_to)
-    #             indexlist.append(northindex)
-    #         elif direction == "e":
-    #             eastindex = path.index(node.e_to)
-    #             indexlist.append(eastindex)
-    #         elif direction == "s":
-    #             southindex = path.index(node.s_to)
-    #             indexlist.append(southindex)
-    #         else:
-    #             westindex = path.index(node.w_to)
-    #             indexlist.append(westindex)
-    #     if len(indexlist) > 2 and path[-2] == path[min(indexlist)]:
-    #             print(traversalPath)
-    #             print("stuck length", len(traversalPath))
-    #             print("stuck, searching at room", node.id)
-    #             stuck = True
-    #             q2 = Queue()
-    #             visitedsearch = set()
-    #             currentpaths = node.getExits()
-    #             for path in currentpaths:
-    #                 if path == 'n':
-    #                     q2.enqueue([node, node.n_to])
-    #                 elif path == 'e':
-    #                     q2.enqueue([node, node.e_to])
-    #                 elif path == 's':
-    #                     q2.enqueue([node, node.s_to])
-    #                 else:
-    #                     q2.enqueue([node, node.w_to])
-    #             for k, v in roomGraph.items():
-    #                 while q2.size() > 0:
-    #                     if not current == player.startingRoom:
-    #                         currentpaths = node.getExits()
-    #                         for path in currentpaths:
-    #                             if path == 'n':
-    #                                 q2.enqueue([node, node.n_to])
-    #                             elif path == 'e':
-    #                                 q2.enqueue([node, node.e_to])
-    #                             elif path == 's':
-    #                                 q2.enqueue([node, node.s_to])
-    #                             else:
-    #                                 q2.enqueue([node, node.w_to])
-                        
-
-
-    #     elif 'n' in node.getExits() and min(indexlist) == northindex:
-    #     
-    #         player.currentRoom = room_in_dir
-    #         q.enqueue(new_path)
-    #         traversalPath.append('n')
-    #     elif 's' in node.getExits() and min(indexlist) == southindex:
-    #     
-    #         player.currentRoom = room_in_dir
-    #         q.enqueue(new_path)
-    #         traversalPath.append('s')
-    #     elif 'w' in node.getExits() and min(indexlist) == westindex:
-    #     
-    #         player.currentRoom = room_in_dir
-    #         q.enqueue(new_path)
-    #         traversalPath.append('w')
-    #     else:
-    #     
-    #         player.currentRoom = room_in_dir
-    #         q.enqueue(new_path)
-    #         traversalPath.append('e')
-    # if len(visited_rooms) == len(roomGraph):
-    #     break
+                if direction == 'w' and not room_in_dir:
+                    deadend == True
+ # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
+            if deadend == True:
+                indexlist = []
+                for direction in directions():
+                    if direction == "n":
+                    elif direction == "e":
+                    elif direction == "s":
+                    else:
+                if len(indexlist) > 2 and path[-2] == path[min(indexlist)]:
+                        print(traversalPath)
+                        print("stuck length", len(traversalPath))
+                        print("stuck, searching at room", node.id)
+                        stuck = True
+                        q2 = Queue()
+                        visitedsearch = set()
+                        currentpaths = node.getExits()
+                        for path in currentpaths:
+                            if path == 'n':
+                                q2.enqueue([node, node.n_to])
+                            elif path == 'e':
+                                q2.enqueue([node, node.e_to])
+                            elif path == 's':
+                                q2.enqueue([node, node.s_to])
+                            else:
+                                q2.enqueue([node, node.w_to])
+                elif 'n' in node.getExits() and min(indexlist) == northindex:
+                    player.currentRoom = room_in_dir
+                    q.enqueue(new_path)
+                    traversalPath.append('n')
+                elif 's' in node.getExits() and min(indexlist) == southindex:
+                    player.currentRoom = room_in_dir
+                    q.enqueue(new_path)
+                    traversalPath.append('s')
+                elif 'w' in node.getExits() and min(indexlist) == westindex:
+                    player.currentRoom = room_in_dir
+                    q.enqueue(new_path)
+                    traversalPath.append('w')
+                else:
+                    player.currentRoom = room_in_dir
+                    q.enqueue(new_path)
+                    traversalPath.append('e')
 
 
 for move in traversalPath:
