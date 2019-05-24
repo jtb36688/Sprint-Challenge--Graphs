@@ -68,24 +68,33 @@ while len(visited_rooms) != len(roomGraph):
     visited_search = set()
     searchpath = {}
     q.enqueue(player.currentRoom)
+    searchstart = player.currentRoom
     while q.size() > 0:
         current_room = q.dequeue()
-        print("checking for unexplored exit at", current_room.id)
+        # print("checking for unexplored exit at", current_room.id)
         visited_search.add(current_room)
         room_found = False
         for direction in directions:
             attr = direction + '_to'
             room_in_dir = getattr(current_room, attr)
             if room_in_dir and room_in_dir not in visited_rooms:
-                print(searchpath[current_room.id])
+                # print(searchpath[current_room.id])
                 for movement in searchpath[current_room.id]:
+                    attr2 = movement + '_to'
+                    searchdir = getattr(searchstart, attr2)
+                    searchstart = searchdir
+                    print("adding to visited rooms", searchstart.id)
+                    if searchstart not in visited_rooms:
+                        visited_rooms.add(searchstart)
                     traversalPath.append(movement)
+                    print("travpathlen", len(traversalPath))
+                    print("numrooms", len(visited_rooms))
                 traversalPath.append(direction)
                 player.currentRoom = room_in_dir
                 room_found = True
                 break
         if room_found:
-            print("closest unexplored", player.currentRoom.id)
+            # print("closest unexplored", player.currentRoom.id)
             break
 # Moving in direction of found unexplored door and then adding path to searchPath
         for direction in directions:
