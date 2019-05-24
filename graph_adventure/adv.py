@@ -31,12 +31,12 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 directions = ['n', 's', 'e', 'w']
 while len(visited_rooms) != len(roomGraph):
-    deadend = None
     visited_rooms.add(player.currentRoom)
     room_found = False
     for direction in directions:
         attr = direction + "_to"
         room_in_dir = getattr(player.currentRoom, attr)
+        print(room_in_dir)
         if direction == "n":
             player.currentRoom = room_in_dir
             traversalPath.append('n')
@@ -62,10 +62,12 @@ while len(visited_rooms) != len(roomGraph):
         q.enqueue([player.currentRoom])
         while len(q) > 0:
             current_room = q.dequeue()
+            print("checking for unexplored exit at", current_room.id)
             visited_rooms.add(current_room)
             room_found = False
             for direction in directions:
                 attr = direction + '_to'
+                print(current_room)
                 room_in_dir = getattr(current_room, attr)
                 if room_in_dir and room_in_dir not in visited_rooms:
                    traversalPath.append(searchpath[current_room])
@@ -76,6 +78,7 @@ while len(visited_rooms) != len(roomGraph):
             for direction in directions:
                 attr = direction + '_to'
                 room_in_dir = getattr(current_room, attr)
+                print(room_in_dir)
                 if room_in_dir and room_in_dir not in visited_rooms:
                     q.enqueue(room_in_dir.id)
                     searchpath[room_in_dir.id] = []
