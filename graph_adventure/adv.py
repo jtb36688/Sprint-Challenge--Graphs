@@ -35,7 +35,8 @@ while len(visited_rooms) != len(roomGraph):
     visited_rooms.add(player.currentRoom)
     room_found = False
     for direction in directions:
-        room_in_dir = player.currentroom.f'direction'_to
+        attr = direction + "_to"
+        room_in_dir = getattr(player.currentRoom, attr)
         if direction == "n":
             player.currentRoom = room_in_dir
             traversalPath.append('n')
@@ -52,6 +53,23 @@ while len(visited_rooms) != len(roomGraph):
             player.currentRoom = room_in_dir
             traversalPath.append('e')
             room_found = True
+        if room_found:
+            continue
+        # checking if room has unexplored door
+        q = Queue()
+        visited_rooms = set()
+        searchpath = []
+        while len(q) > 0:
+            current_room = q.dequeue()
+            visited_rooms.add(current_room)
+            for direction in directions:
+                attr = direction + '_to'
+                room_in_dir = getattr(current_room, attr)
+                traversalPath.append(searchpath)
+                traversalPath.append(direction)
+                player.currentRoom = room_in_dir
+
+
             
         
         # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
