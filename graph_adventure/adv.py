@@ -36,59 +36,60 @@ while len(visited_rooms) != len(roomGraph):
     for direction in directions:
         attr = direction + "_to"
         if direction in player.currentRoom.getExits():
-          room_in_dir = getattr(player.currentRoom, attr)
-        print(room_in_dir)
-        if direction == "n" and room_in_dir not in visited_rooms:
-            player.currentRoom = room_in_dir
-            traversalPath.append('n')
-            room_found = True  
-        elif direction == "s" and room_in_dir not in visited_rooms:
-            player.currentRoom = room_in_dir
-            traversalPath.append('s')
-            room_found = True  
-        elif direction == "w" and room_in_dir not in visited_rooms:
-            player.currentRoom = room_in_dir
-            traversalPath.append('w')
-            room_found = True  
-        elif direction == "e" and room_in_dir not in visited_rooms:
-            player.currentRoom = room_in_dir
-            traversalPath.append('e')
-            room_found = True
+            room_in_dir = getattr(player.currentRoom, attr)
+            print(room_in_dir)
+            if direction == "n" and room_in_dir not in visited_rooms:
+                player.currentRoom = room_in_dir
+                traversalPath.append('n')
+                room_found = True  
+            elif direction == "s" and room_in_dir not in visited_rooms:
+                player.currentRoom = room_in_dir
+                traversalPath.append('s')
+                room_found = True  
+            elif direction == "w" and room_in_dir not in visited_rooms:
+                player.currentRoom = room_in_dir
+                traversalPath.append('w')
+                room_found = True  
+            elif direction == "e" and room_in_dir not in visited_rooms:
+                player.currentRoom = room_in_dir
+                traversalPath.append('e')
+                room_found = True
+    if room_found:
+        print("room found")
+        continue
+    # checking for the closest unexplored doors
+    q = Queue()
+    visited_search = set()
+    searchpath = {}
+    q.enqueue(player.currentRoom)
+    while q.size() > 0:
+        current_room = q.dequeue()
+        print("checking for unexplored exit at", current_room.id)
+        visited_search.add(current_room)
+        room_found = False
+        for direction in directions:
+            attr = direction + '_to'
+            print(current_room)
+            room_in_dir = getattr(current_room, attr)
+            if room_in_dir and room_in_dir not in visited_rooms:
+                traversalPath.append(searchpath[current_room.id])
+                traversalPath.append(direction)
+                player.currentRoom = room_in_dir
+                room_found = True
         if room_found:
-            continue
-        # checking for the closest unexplored doors
-        q = Queue()
-        visited_search = set()
-        searchpath = {}
-        q.enqueue(player.currentRoom)
-        while q.size() > 0:
-            current_room = q.dequeue()
-            print("checking for unexplored exit at", current_room.id)
-            visited_search.add(current_room)
-            room_found = False
-            for direction in directions:
-                attr = direction + '_to'
-                print(current_room)
-                room_in_dir = getattr(current_room, attr)
-                if room_in_dir and room_in_dir not in visited_rooms:
-                   traversalPath.append(searchpath[current_room.id])
-                   traversalPath.append(direction)
-                   player.currentRoom = room_in_dir
-                   room_found = True
-            if room_found:
-                print("dead end found at", player.currentRoom)
-                break
- # Moving in direction of found unexplored door and then adding path to traversalPath
-            for direction in directions:
-                attr = direction + '_to'
-                room_in_dir = getattr(current_room, attr)
-                print(room_in_dir)
-                if room_in_dir and room_in_dir not in visited_search:
-                    q.enqueue(room_in_dir)
-                    searchpath[room_in_dir.id] = []
-                    if current_room in searchpath:
-                        searchpath[room_in_dir.id].append(searchpath[current_room])
-                        searchpath[room_in_dir.id].append(direction)
+            print("dead end found at", player.currentRoom)
+            break
+# Moving in direction of found unexplored door and then adding path to traversalPath
+        for direction in directions:
+            attr = direction + '_to'
+            room_in_dir = getattr(current_room, attr)
+            print(room_in_dir)
+            if room_in_dir and room_in_dir not in visited_search:
+                q.enqueue(room_in_dir)
+                searchpath[room_in_dir.id] = []
+                if current_room in searchpath:
+                    searchpath[room_in_dir.id].append(searchpath[current_room])
+                    searchpath[room_in_dir.id].append(direction)
 
 for move in traversalPath:
     player.travel(move)
