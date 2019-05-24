@@ -29,45 +29,31 @@ traversalPath = []
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
 directions = ['n', 's', 'e', 'w']
-q = Queue()
-q.enqueue([player.currentRoom])
 while len(visited_rooms) != len(roomGraph):
-    deadend = False
-    path = q.dequeue()
-    node = path[-1]
-    for direction in node.getExits():
-        if direction == "n" and node.n_to not in visited_rooms:
-            new_path = path.copy()
-            new_path.append(node.n_to)
-            visited_rooms.add(node.n_to)
-            q.enqueue(new_path)
+    deadend = None
+    visited_rooms.add(player.currentRoom)
+    room_found = False
+    for direction in directions:
+        room_in_dir = player.currentroom.f'direction'_to
+        if direction == "n":
+            player.currentRoom = room_in_dir
             traversalPath.append('n')
-            break
-        elif direction == "s" and node.s_to not in visited_rooms:
-            new_path = path.copy()
-            new_path.append(node.s_to)
-            visited_rooms.add(node.s_to)
-            q.enqueue(new_path)
+            room_found = True  
+        elif direction == "s":
+            player.currentRoom = room_in_dir
             traversalPath.append('s')
-            break
-        elif direction == "w" and node.w_to not in visited_rooms:
-            new_path = path.copy()
-            new_path.append(node.w_to)
-            visited_rooms.add(node.w_to)
-            q.enqueue(new_path)
+            room_found = True  
+        elif direction == "w":
+            player.currentRoom = room_in_dir
             traversalPath.append('w')
-            break
-        elif direction == "e" and node.e_to not in visited_rooms:
-            new_path = path.copy()
-            new_path.append(node.e_to)
-            visited_rooms.add(node.e_to)
-            q.enqueue(new_path)
+            room_found = True  
+        elif direction == "e":
+            player.currentRoom = room_in_dir
             traversalPath.append('e')
-            break
-        elif direction == node.getExits()[-1]:
-            deadend = True
+            room_found = True
+            
+        
         # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
     # if deadend == True:
     #     indexlist = []
@@ -118,23 +104,23 @@ while len(visited_rooms) != len(roomGraph):
 
 
     #     elif 'n' in node.getExits() and min(indexlist) == northindex:
-    #         new_path = path.copy()
-    #         new_path.append(node.n_to)
+    #     
+    #         player.currentRoom = room_in_dir
     #         q.enqueue(new_path)
     #         traversalPath.append('n')
     #     elif 's' in node.getExits() and min(indexlist) == southindex:
-    #         new_path = path.copy()
-    #         new_path.append(node.s_to)
+    #     
+    #         player.currentRoom = room_in_dir
     #         q.enqueue(new_path)
     #         traversalPath.append('s')
     #     elif 'w' in node.getExits() and min(indexlist) == westindex:
-    #         new_path = path.copy()
-    #         new_path.append(node.w_to)
+    #     
+    #         player.currentRoom = room_in_dir
     #         q.enqueue(new_path)
     #         traversalPath.append('w')
     #     else:
-    #         new_path = path.copy()
-    #         new_path.append(node.e_to)
+    #     
+    #         player.currentRoom = room_in_dir
     #         q.enqueue(new_path)
     #         traversalPath.append('e')
     # if len(visited_rooms) == len(roomGraph):
@@ -164,7 +150,7 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
+# player.currentRoom = room_in_dirion(player)
 # while True:
 #     cmds = input("-> ").lower().split(" ")
 #     if cmds[0] in ["n", "s", "e", "w"]:
