@@ -75,27 +75,13 @@ while len(visited_rooms) != len(roomGraph):
  # Moving in direction of found unexplored door and then adding path to traversalPath
             for direction in directions:
                 attr = direction + '_to'
-                indexlist = []
-                if room_found:
-                        print(traversalPath)
-                        print("stuck length", len(traversalPath))
-                        print("stuck, searching at room", room_in_dir.id)
-                        room_in_dir = getattr(current_room, attr)
-                        if room_in_dir and room_in_dir not in visited_rooms:
-                            for path in searchpath:
-                                if path == 'n':
-                                    q.enqueue([room_in_dir, room_in_dir.n_to])
-                                    traversalPath.append(searchpath[current_room])
-                                elif path == 'e':
-                                    q.enqueue([room_in_dir, room_in_dir.e_to])
-                                    traversalPath.append(searchpath[current_room])
-                                elif path == 's':
-                                    q.enqueue([room_in_dir, room_in_dir.s_to])
-                                    traversalPath.append(searchpath[current_room])
-                                else:
-                                    q.enqueue([room_in_dir, room_in_dir.w_to])
-                                    traversalPath.append(searchpath[current_room])
-
+                room_in_dir = getattr(current_room, attr)
+                if room_in_dir and room_in_dir not in visited_rooms:
+                    q.enqueue(room_in_dir.id)
+                    searchpath[room_in_dir.id] = []
+                    if current_room in searchpath:
+                        searchpath[room_in_dir].append(searchpath[current_room])
+                        searchpath[room_in_dir].append(direction)
 
 for move in traversalPath:
     player.travel(move)
