@@ -30,38 +30,41 @@ traversalPath = []
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 directions = ['n', 's', 'w', 'e']
+traversalGraph = {}
+traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
 while len(visited_rooms) != len(roomGraph):
     if player.currentRoom not in visited_rooms:
         visited_rooms.add(player.currentRoom)
     room_found = False
-    print("original loop at", player.currentRoom.id)
-    print("current path", traversalPath)
     for direction in directions:
         attr = direction + "_to"
         if direction in player.currentRoom.getExits():
             room_in_dir = getattr(player.currentRoom, attr)
             if direction == "n" and room_in_dir not in visited_rooms:
                 player.currentRoom = room_in_dir
+                traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
                 traversalPath.append('n')
                 room_found = True
                 break
             elif direction == "s" and room_in_dir not in visited_rooms:
                 player.currentRoom = room_in_dir
+                traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
                 traversalPath.append('s')
                 room_found = True
                 break
             elif direction == "e" and room_in_dir not in visited_rooms:
                 player.currentRoom = room_in_dir
+                traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
                 traversalPath.append('e')
                 room_found = True  
                 break
             elif direction == "w" and room_in_dir not in visited_rooms:
                 player.currentRoom = room_in_dir
+                traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
                 traversalPath.append('w')
                 room_found = True
                 break
     if room_found:
-        print("room found")
         continue
     # checking for the closest unexplored doors
     q = Queue()
@@ -71,26 +74,20 @@ while len(visited_rooms) != len(roomGraph):
     searchstart = player.currentRoom
     while q.size() > 0:
         current_room = q.dequeue()
-        # print("checking for unexplored exit at", current_room.id)
         visited_search.add(current_room)
         room_found = False
         for direction in directions:
             attr = direction + '_to'
             room_in_dir = getattr(current_room, attr)
             if room_in_dir and room_in_dir not in visited_rooms:
-                # print(searchpath[current_room.id])
                 for movement in searchpath[current_room.id]:
-                    print("appending", movement)
-
                     traversalPath.append(movement)
-
-                print("appending", direction)
                 traversalPath.append(direction)
                 player.currentRoom = room_in_dir
                 room_found = True
                 break
         if room_found:
-            print("closest unexplored", len(traversalPath))
+            traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
             break
 # Moving in direction of found unexplored door and then adding path to searchPath
         for direction in directions:
@@ -106,6 +103,10 @@ while len(visited_rooms) != len(roomGraph):
 
 visited_rooms = set()
 player.currentRoom = world.startingRoom
+
+for k, v in traversalGraph.items():
+    print(k, v)
+print("traversalGraph length", len(traversalGraph))
 
 for move in traversalPath:
     player.travel(move)
