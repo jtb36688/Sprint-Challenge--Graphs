@@ -55,7 +55,7 @@ while len(visited_rooms) != len(roomGraph):
             room_found = True
         if room_found:
             continue
-        # checking if room has unexplored door
+        # checking for the closest unexplored doors
         q = Queue()
         visited_rooms = set()
         searchpath = []
@@ -66,53 +66,39 @@ while len(visited_rooms) != len(roomGraph):
                 attr = direction + '_to'
                 room_in_dir = getattr(current_room, attr)
                 if room_in_dir in visited_rooms:
+                    searchpath.append(room_in_dir)
                     room_in_dir == False
-                traversalPath.append(searchpath)
-                traversalPath.append(direction)
                 player.currentRoom = room_in_dir
                 if direction == 'w' and not room_in_dir:
                     deadend == True
- # Ensuring that the visitedpath taken is whichever one was more crossed earlier.
+ # Moving in direction of found unexplored door and then adding path to traversalPath
             if deadend == True:
                 indexlist = []
-                for direction in directions():
-                    if direction == "n":
-                    elif direction == "e":
-                    elif direction == "s":
-                    else:
+                q2 = Queue()
+                q2.enqueue([player.currentRoom])
                 if len(indexlist) > 2 and path[-2] == path[min(indexlist)]:
                         print(traversalPath)
                         print("stuck length", len(traversalPath))
-                        print("stuck, searching at room", node.id)
+                        print("stuck, searching at room", room_in_dir.id)
                         stuck = True
-                        q2 = Queue()
-                        visitedsearch = set()
-                        currentpaths = node.getExits()
-                        for path in currentpaths:
-                            if path == 'n':
-                                q2.enqueue([node, node.n_to])
-                            elif path == 'e':
-                                q2.enqueue([node, node.e_to])
-                            elif path == 's':
-                                q2.enqueue([node, node.s_to])
-                            else:
-                                q2.enqueue([node, node.w_to])
-                elif 'n' in node.getExits() and min(indexlist) == northindex:
-                    player.currentRoom = room_in_dir
-                    q.enqueue(new_path)
-                    traversalPath.append('n')
-                elif 's' in node.getExits() and min(indexlist) == southindex:
-                    player.currentRoom = room_in_dir
-                    q.enqueue(new_path)
-                    traversalPath.append('s')
-                elif 'w' in node.getExits() and min(indexlist) == westindex:
-                    player.currentRoom = room_in_dir
-                    q.enqueue(new_path)
-                    traversalPath.append('w')
-                else:
-                    player.currentRoom = room_in_dir
-                    q.enqueue(new_path)
-                    traversalPath.append('e')
+                        if stuck:
+                            for path in searchpath:
+                                if path == 'n':
+                                    q2.enqueue([room_in_dir, room_in_dir.n_to])
+                                    stuck = False
+                                    traversalPath.append(path)
+                                elif path == 'e':
+                                    q2.enqueue([room_in_dir, room_in_dir.e_to])
+                                    stuck = False
+                                    traversalPath.append(path)
+                                elif path == 's':
+                                    q2.enqueue([room_in_dir, room_in_dir.s_to])
+                                    stuck = False
+                                    traversalPath.append(path)
+                                else:
+                                    q2.enqueue([room_in_dir, room_in_dir.w_to])
+                                    stuck = False
+                                    traversalPath.append(path)
 
 
 for move in traversalPath:
