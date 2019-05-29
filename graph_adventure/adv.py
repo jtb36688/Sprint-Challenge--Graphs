@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from util import Stack, Queue
 
 import random
 
@@ -21,13 +22,92 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
 
+        
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
+directions = ['n', 's', 'w', 'e']
+traversalGraph = {}
+traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
+while len(visited_rooms) != len(roomGraph):
+    if player.currentRoom not in visited_rooms:
+        visited_rooms.add(player.currentRoom)
+    room_found = False
+    for direction in directions:
+        attr = direction + "_to"
+        if direction in player.currentRoom.getExits():
+            room_in_dir = getattr(player.currentRoom, attr)
+            if direction == "n" and room_in_dir not in visited_rooms:
+                player.currentRoom = room_in_dir
+                traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
+                traversalPath.append('n')
+                room_found = True
+                break
+            elif direction == "s" and room_in_dir not in visited_rooms:
+                player.currentRoom = room_in_dir
+                traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
+                traversalPath.append('s')
+                room_found = True
+                break
+            elif direction == "e" and room_in_dir not in visited_rooms:
+                player.currentRoom = room_in_dir
+                traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
+                traversalPath.append('e')
+                room_found = True  
+                break
+            elif direction == "w" and room_in_dir not in visited_rooms:
+                player.currentRoom = room_in_dir
+                traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
+                traversalPath.append('w')
+                room_found = True
+                break
+    if room_found:
+        continue
+    # checking for the closest unexplored doors
+    q = Queue()
+    visited_search = set()
+    searchpath = {}
+    q.enqueue(player.currentRoom)
+    searchstart = player.currentRoom
+    while q.size() > 0:
+        current_room = q.dequeue()
+        visited_search.add(current_room)
+        room_found = False
+        for direction in directions:
+            attr = direction + '_to'
+            room_in_dir = getattr(current_room, attr)
+            if room_in_dir and room_in_dir not in visited_rooms:
+                for movement in searchpath[current_room.id]:
+                    traversalPath.append(movement)
+                traversalPath.append(direction)
+                player.currentRoom = room_in_dir
+                room_found = True
+                break
+        if room_found:
+            traversalGraph[player.currentRoom.id] = roomGraph[player.currentRoom.id][1]
+            break
+# Moving in direction of found unexplored door and then adding path to searchPath
+        for direction in directions:
+            attr = direction + '_to'
+            room_in_dir = getattr(current_room, attr)
+            if room_in_dir and room_in_dir not in visited_search:
+                q.enqueue(room_in_dir)
+                searchpath[room_in_dir.id] = []
+                if current_room.id in searchpath:
+                    for movement in searchpath[current_room.id]:
+                        searchpath[room_in_dir.id].append(movement)
+                searchpath[room_in_dir.id].append(direction)
+
+visited_rooms = set()
+player.currentRoom = world.startingRoom
+
+for k, v in traversalGraph.items():
+    print(k, v)
+print("traversalGraph length", len(traversalGraph))
+
 for move in traversalPath:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
@@ -40,10 +120,18 @@ else:
 
 
 
+
+#########################################
+
+#########################################
+
+
+
+
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
+# player.currentRoom = room_in_dirion(player)
 # while True:
 #     cmds = input("-> ").lower().split(" ")
 #     if cmds[0] in ["n", "s", "e", "w"]:
